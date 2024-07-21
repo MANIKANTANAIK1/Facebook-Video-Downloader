@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facebook Video Downloader</title>
+  <link rel="shortcut icon" href="https://i.imghippo.com/files/RKF5r1721569317.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("https://replicate.delivery/pbxt/Nd95yCph8ObrFViiiPyPVY4bUMVz2NPbzeMdyYvTzODsvRlJA/out.png");
+      background-repeat: no-repeat;
+      background-size:cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .title-container img {
+      margin-right: 10px;
+      width: 40px;
+      height: auto;
+    }
+    h1 {
+      color: #333;
+    }
+    .search {
+      margin-bottom: 20px;
+    }
+    #input {
+      padding: 10px;
+      width: calc(100%);
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .button {
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output a {
+      color: #007bff;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+    }
+    #output a:hover {
+      background-color: #218838;
+    }
+    #boolean {
+      margin-top: 20px;
+    }
+    .danger {
+      color: red;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    #facebook{
+      color: #007bff;
+      font:bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Icon">
+      <h1><b id="facebook">Facebook</b> Video Downloader</h1>
+    </div>
+    <div class="search">
+      <input class="form-control mr-sm-2" type="search" id="input" placeholder="Paste the link" aria-label="Search">
+    </div>
+    <div class="button">
+      <button type="button" class="btn btn-primary btn-lg btn-block" onclick="get()">Search</button>
+    </div>
+    <div id="output"></div>
+    <div id="boolean"></div>
+  </div>
+  <script>
+    async function get() {
+      let input = document.getElementById("input").value;
+      let output = document.getElementById("output");
+      let boolean = document.getElementById("boolean");
+      const url = `https://social-media-video-downloader.p.rapidapi.com/smvd/get/facebook?url=${encodeURIComponent(input)}`;
+      const options = {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": "4224487c5amsh3a28acfd8b588b3p14c30bjsn12fc2a78d9fb",
+          "x-rapidapi-host": "social-media-video-downloader.p.rapidapi.com",
+        },
+      };
+      try {
+        let a = await fetch(url, options);
+        let b = await a.json();
+        console.log(b);
+        if (b.success === true) {
+          boolean.innerHTML = "Success";
+          boolean.classList.remove("danger");
+          boolean.classList.add("success");
+          let x = b.links.length;
+          console.log(x);
+          let videoLink = b.links[x - 2].link;
+          output.innerHTML = `<a href="${videoLink}" download="video.mp4">Download Video</a>`;
+        } else {
+          boolean.innerHTML = "Failed";
+          boolean.classList.remove("success");
+          boolean.classList.add("danger");
+          output.innerHTML = "";
+        }
+      } catch (error) {
+        console.error(error);
+        boolean.innerHTML = "Failed";
+        boolean.classList.remove("success");
+        boolean.classList.add("danger");
+        output.innerHTML = "";
+      }
+    }
+  </script>
+</body>
+</html>
